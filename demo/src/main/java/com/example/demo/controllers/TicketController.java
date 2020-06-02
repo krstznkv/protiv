@@ -11,6 +11,7 @@ import com.example.demo.services.impl.Platov;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,7 +26,7 @@ public class TicketController {
   //  private final Platov platov;
     private final AllTicketsService allTicketsService;
     @PostMapping("find")
-    public ResponseEntity<Set<Ticket>> findTickets(Request request){
+    public ResponseEntity<Set<Ticket>> findTickets(@RequestBody Request request){
         return ResponseEntity.ok(allTicketsService.findAll(request));
     }
    

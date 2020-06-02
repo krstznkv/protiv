@@ -14,7 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import javax.sql.DataSource;
 
 @Configuration
-@EnableWebSecurity
+//@EnableWebSecurity
 public class SecSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserService userService;
@@ -39,9 +39,9 @@ public class SecSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/test")
-                .access("hasRole('ADMIN')")
-                .antMatchers("/h2-console/**").permitAll();
+              //  .antMatchers("/test")
+               // .access("hasRole('ADMIN')")
+                .antMatchers("/","/test","/main").permitAll();
 
         http.csrf().disable();
         http.headers().frameOptions().disable();
@@ -58,6 +58,8 @@ public class SecSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     protected void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userService).passwordEncoder(passwordEncoder());
+
+
     }
     @Bean
     public PasswordEncoder passwordEncoder() {

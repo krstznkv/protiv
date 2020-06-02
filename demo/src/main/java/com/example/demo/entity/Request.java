@@ -28,8 +28,7 @@ public class Request {
     private Integer adult;
     @JsonProperty("ret_date")
     private String retDate;
-    @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+
 
     @JsonProperty("from")
     public String getFrom() {
@@ -91,14 +90,6 @@ public class Request {
         this.retDate = retDate;
     }
 
-    @JsonAnyGetter
-    public Map<String, Object> getAdditionalProperties() {
-        return this.additionalProperties;
-    }
 
-    @JsonAnySetter
-    public void setAdditionalProperty(String name, Object value) {
-        this.additionalProperties.put(name, value);
-    }
 
 }

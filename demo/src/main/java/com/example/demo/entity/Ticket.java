@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Data;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
         "departureDate",
@@ -13,8 +16,11 @@ import lombok.Data;
         "departureAir",
         "arrivalAir"
 })
+@Entity
 @Data
 public class Ticket {
+    @Id
+    private Long id;
     @JsonProperty("departureDate")
     private String departureDate;
     @JsonProperty("arrivalDate")
