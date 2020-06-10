@@ -14,6 +14,7 @@ import java.util.Map;
         "adult",
         "ret_date"
 })
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Request {
 
     @JsonProperty("from")

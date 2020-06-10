@@ -1,7 +1,5 @@
 package com.example.demo.entity;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.annotation.*;
 import lombok.Data;
 
 import javax.persistence.Entity;
@@ -16,6 +14,7 @@ import javax.persistence.Id;
         "departureAir",
         "arrivalAir"
 })
+@JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
 @Data
 public class Ticket {

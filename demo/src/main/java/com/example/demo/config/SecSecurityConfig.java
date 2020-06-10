@@ -20,38 +20,23 @@ public class SecSecurityConfig extends WebSecurityConfigurerAdapter {
     private UserService userService;
 
 
-/*    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        PasswordEncoder encoder =
-                PasswordEncoderFactories.createDelegatingPasswordEncoder();
-        auth
-                .inMemoryAuthentication()
-                .withUser("user")
-                .password(encoder.encode("password"))
-                .roles("USER")
-                .and()
-                .withUser("admin")
-                .password(encoder.encode("admin"))
-                .roles("USER", "ADMIN");
-    }*/
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-              //  .antMatchers("/test")
-               // .access("hasRole('ADMIN')")
-                .antMatchers("/","/test","/main").permitAll();
+              .antMatchers("/test")
+                .access("hasRole('ADMIN')")
+                .antMatchers("/","/registration","/find").permitAll()
+                .anyRequest()
+                .authenticated()
+                .and()
+                .httpBasic();
 
         http.csrf().disable();
         http.headers().frameOptions().disable();
+        http.cors();
 
-        http
-                .formLogin()
-                .permitAll()
-                .and()
-                .logout()
-                .permitAll();
     }
 
 
