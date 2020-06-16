@@ -2,7 +2,6 @@ package com.example.demo.services.impl;
 
 import com.example.demo.entity.Request;
 import com.example.demo.entity.Ticket;
-import com.example.demo.entity.platov.PlatovRequest;
 import com.example.demo.entity.platov.PlatovTicket;
 import com.example.demo.services.TicketService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -61,17 +60,18 @@ public class Platov implements TicketService {
             List<JsonNode> trips=jsonNode.findValues("trips");
            // List<JsonNode> segments=jsonNode.findValues("segments");
             List<JsonNode> prices=jsonNode.findValues("price");
+            List<JsonNode> links=jsonNode.findValues("deep_link");
             for (int i=0;i<trips.size();i++){
                 PlatovTicket platovTicket =objectMapper.readValue(trips.get(i).findValue("segments").get(0).toString(), PlatovTicket.class);
                platovTicket.setPrice(prices.get(i).toString());
                Ticket ticket=new Ticket();
                ticket.setArrivalDate(platovTicket.getArrivalTime());
                ticket.setDepartureDate(platovTicket.getDepartureTime());
-               ticket.setDepartureAir(platovTicket.getDeparture().getId());
-               ticket.setArrivalAir(platovTicket.getArrival().getId());
+               ticket.setDepartureAir(platovTicket.getDeparture().getName());
+               ticket.setArrivalAir(platovTicket.getArrival().getName());
                ticket.setPrice(platovTicket.getPrice());
                ticket.setAirline(platovTicket.getAirline().getName());
-
+               ticket.setLink(links.get(i).toString());
                 tickets.add(ticket);
             }
             return tickets;

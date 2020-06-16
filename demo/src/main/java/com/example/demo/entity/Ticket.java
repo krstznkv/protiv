@@ -2,8 +2,7 @@ package com.example.demo.entity;
 import com.fasterxml.jackson.annotation.*;
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -17,8 +16,10 @@ import javax.persistence.Id;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
 @Data
+@Table(name="ticket")
 public class Ticket {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @JsonProperty("departureDate")
     private String departureDate;
@@ -32,6 +33,9 @@ public class Ticket {
     private String departureAir;
     @JsonProperty("arrivalAir")
     private String arrivalAir;
+
+    @JsonProperty("link")
+    private String link="";
 
     @JsonProperty("departureDate")
     public String getDepartureDate() {

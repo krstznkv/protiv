@@ -27,7 +27,7 @@ public class SecSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
               .antMatchers("/test")
                 .access("hasRole('ADMIN')")
-                .antMatchers("/","/registration","/find").permitAll()
+                .antMatchers("/","/registration","/find","/saveTicket").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()

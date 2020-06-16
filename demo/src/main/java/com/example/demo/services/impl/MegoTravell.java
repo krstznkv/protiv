@@ -21,6 +21,7 @@ import java.util.List;
 @Service
 @Log4j2
 public class MegoTravell implements TicketService {
+    String uid;
     private final RestTemplate restTemplate=new RestTemplate();
     private ObjectMapper objectMapper=new ObjectMapper();
     @Value("${service.mego}")
@@ -45,6 +46,12 @@ public class MegoTravell implements TicketService {
         megoRequest.setLocale("ru");
         megoRequest.setPartnerCookie("t=1");
         megoRequest.setTheme("mego");
+        char [] date= new char[4];
+        date[0] = r.getDate().charAt(5);
+        date[1]=r.getDate().charAt(6);
+        date[2]=r.getDate().charAt(8);
+        date[3]=r.getDate().charAt(9);
+        String dateArrive=new String(date);
 
         HttpEntity<MegoRequest> httpEntity=new HttpEntity<MegoRequest>(megoRequest);
         String response=restTemplate
@@ -68,13 +75,18 @@ public class MegoTravell implements TicketService {
                         .findValue(megoTicket.getArrivalDestinationUID())
                         .findValue("localizedName")
                         .toString());
+                if(i==0) uid=megoTicket.getArrivalDestinationUID();
                 Ticket ticket=new Ticket();
+                ticket.setLink("https://mego.travel/flights/"+r.getFrom()+
+                        "/"+r.getTo()+
+                        "/"+dateArrive+"/100/e");
                 ticket.setAirline(megoTicket.getAirline());
                 ticket.setArrivalAir(megoTicket.getArrivalAir());
                 ticket.setDepartureAir(megoTicket.getDepartureAir());
                 ticket.setDepartureDate(megoTicket.getDepartureDate());
                 ticket.setArrivalDate(megoTicket.getArrivalDate());
                 ticket.setPrice(megoTicket.getBillingPrice());
+                if(megoTicket.getArrivalDestinationUID().equals(uid))
                 tickets.add(ticket);
             }
             return tickets;
