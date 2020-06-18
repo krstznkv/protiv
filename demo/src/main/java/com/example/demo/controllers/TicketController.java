@@ -1,5 +1,6 @@
 package com.example.demo.controllers;
 
+import com.example.demo.entity.Message;
 import com.example.demo.entity.Request;
 import com.example.demo.entity.Ticket;
 import com.example.demo.entity.mego.MegoRequest;
@@ -30,8 +31,6 @@ public class TicketController {
     private final TicketDBService ticketDBService;
     private final AllTicketsService allTicketsService;
 
-    @Autowired
-    AirlineTopRepo airlineTopRepo;
     @PostMapping("find")
     public ResponseEntity<Set<Ticket>> findTickets(@RequestBody Request request){
         return ResponseEntity.ok(allTicketsService.findAll(request));
@@ -40,10 +39,11 @@ public class TicketController {
     public ResponseEntity<Ticket> saveTicket(@RequestBody Ticket ticket){
         return ResponseEntity.ok(ticketDBService.save(ticket));
     }
-   /* @PostMapping("report")
+    @PostMapping("report")
     public ResponseEntity<List<AirlineTop>> findTop(){
-        return ResponseEntity.ok(airlineTopRepo.findTop());
-    }*/
+
+        return ResponseEntity.ok(ticketDBService.findTop());
+    }
 
 
    
