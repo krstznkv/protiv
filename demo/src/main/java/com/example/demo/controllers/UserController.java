@@ -23,9 +23,14 @@ public class UserController {
 
     @PostMapping("registration")
     public ResponseEntity<User> registration(@RequestBody User user) {
-        user.setRoles(Collections.singleton(Role.ROLE_USER));
+       return ResponseEntity.ok(userService.save(user));
+    }
+    @PostMapping("registrationA")
+    public ResponseEntity<User> registrationA(@RequestBody User user) {
+        user.setRole(Role.ROLE_ADMIN);
         return ResponseEntity.ok(userService.save(user));
     }
+
     @GetMapping("/login")
     public ResponseEntity<Message>  authorize()
     {
