@@ -4,11 +4,13 @@ import com.example.demo.entity.Request;
 import com.example.demo.entity.Ticket;
 import com.example.demo.entity.mego.MegoRequest;
 import com.example.demo.entity.mego.MegoTicket;
+import com.example.demo.repo.AirportRepo;
 import com.example.demo.services.TicketService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -21,6 +23,8 @@ import java.util.List;
 @Service
 @Log4j2
 public class MegoTravell implements TicketService {
+    @Autowired
+    AirportRepo airportRepo;
     String uid;
     private final RestTemplate restTemplate=new RestTemplate();
     private ObjectMapper objectMapper=new ObjectMapper();
@@ -68,12 +72,12 @@ public class MegoTravell implements TicketService {
                 megoTicket.setDepartureAir(jsonNode
                         .findValue("destinations")
                         .findValue(megoTicket.getDepartureDestinationUID())
-                        .findValue("localizedName")
+                        .findValue("iataCode")
                         .toString());
                 megoTicket.setArrivalAir(jsonNode
                         .findValue("destinations")
                         .findValue(megoTicket.getArrivalDestinationUID())
-                        .findValue("localizedName")
+                        .findValue("iataCode")
                         .toString());
                 if(i==0) uid=megoTicket.getArrivalDestinationUID();
                 Ticket ticket=new Ticket();
@@ -81,8 +85,10 @@ public class MegoTravell implements TicketService {
                         "/"+r.getTo()+
                         "/"+dateArrive+"/100/e");
                 ticket.setAirline(megoTicket.getAirline());
-                ticket.setArrivalAir(megoTicket.getArrivalAir());
-                ticket.setDepartureAir(megoTicket.getDepartureAir());
+                String from= megoTicket.getArrivalAir();
+                String to=megoTicket.getDepartureAir();
+                ticket.setArrivalAir(airportRepo.findByCode(from.substring(1,from.length()-1)).getName_air());
+                ticket.setDepartureAir(airportRepo.findByCode(to.substring(1,to.length()-1)).getName_air());
                 ticket.setDepartureDate(megoTicket.getDepartureDate());
                 ticket.setArrivalDate(megoTicket.getArrivalDate());
                 ticket.setPrice(megoTicket.getBillingPrice());

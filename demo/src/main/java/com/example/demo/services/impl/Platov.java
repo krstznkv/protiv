@@ -3,11 +3,13 @@ package com.example.demo.services.impl;
 import com.example.demo.entity.Request;
 import com.example.demo.entity.Ticket;
 import com.example.demo.entity.platov.PlatovTicket;
+import com.example.demo.repo.AirportRepo;
 import com.example.demo.services.TicketService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -24,6 +26,9 @@ import java.util.List;
 public class Platov implements TicketService {
     private final RestTemplate restTemplate=new RestTemplate();
     private ObjectMapper objectMapper=new ObjectMapper();
+    @Autowired
+    AirportRepo airportRepo;
+
     @Override
     public List<Ticket> getTickets(Request r) {
         HttpHeaders headers = new HttpHeaders();
@@ -67,8 +72,8 @@ public class Platov implements TicketService {
                Ticket ticket=new Ticket();
                ticket.setArrivalDate(platovTicket.getArrivalTime());
                ticket.setDepartureDate(platovTicket.getDepartureTime());
-               ticket.setDepartureAir(platovTicket.getDeparture().getName());
-               ticket.setArrivalAir(platovTicket.getArrival().getName());
+               ticket.setDepartureAir(airportRepo.findByCode(platovTicket.getDeparture().getId()).getName_air());
+               ticket.setArrivalAir(airportRepo.findByCode(platovTicket.getArrival().getId()).getName_air());
                ticket.setPrice(platovTicket.getPrice());
                ticket.setAirline(platovTicket.getAirline().getName());
                ticket.setLink(links.get(i).toString());

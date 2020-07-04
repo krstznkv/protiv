@@ -4,7 +4,10 @@ import com.example.demo.entity.City;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface CityRepo extends CrudRepository<City, Long> {
-    City findByName(String name);
+    List<City> findAllByName(String name);
+    City findByCode(String code);
 }
