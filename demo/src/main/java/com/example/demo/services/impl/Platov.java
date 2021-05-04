@@ -24,8 +24,8 @@ import java.util.List;
 @Service
 @Log4j2
 public class Platov implements TicketService {
-    private final RestTemplate restTemplate=new RestTemplate();
-    private ObjectMapper objectMapper=new ObjectMapper();
+    private final RestTemplate restTemplate = new RestTemplate();
+    private ObjectMapper objectMapper = new ObjectMapper();
     @Autowired
     AirportRepo airportRepo;
 
@@ -38,13 +38,13 @@ public class Platov implements TicketService {
                 .queryParam("date", "717")
                 .queryParam("from", r.getFrom())
                 .queryParam("to", r.getTo())
-                .queryParam("dep_date",r.getDate())
+                .queryParam("dep_date", r.getDate())
                 .queryParam("ret_date", "")
-                 .queryParam("adults", r.getAdult())
+                .queryParam("adults", r.getAdult())
                 .queryParam("children", r.getChildren())
                 .queryParam("infants", 0)
                 .queryParam("service_class", "E")
-                 .queryParam("lid", "")
+                .queryParam("lid", "")
                 .queryParam("only_direct", "N")
                 .queryParam("lang", "en")
                 .queryParam("session_token", "null")
@@ -53,35 +53,46 @@ public class Platov implements TicketService {
 
 
         HttpEntity<?> entity = new HttpEntity<>(headers);
-        String response=restTemplate
+        String response = restTemplate
                 .exchange(builder.toUriString(),
                         HttpMethod.GET,
                         entity,
                         String.class)
                 .getBody();
-     try {
-            JsonNode jsonNode=objectMapper.readTree(response);
-            List<Ticket> tickets =new ArrayList<>();
-            List<JsonNode> trips=jsonNode.findValues("trips");
-           // List<JsonNode> segments=jsonNode.findValues("segments");
-            List<JsonNode> prices=jsonNode.findValues("price");
-            List<JsonNode> links=jsonNode.findValues("deep_link");
-            for (int i=0;i<trips.size();i++){
-                PlatovTicket platovTicket =objectMapper.readValue(trips.get(i).findValue("segments").get(0).toString(), PlatovTicket.class);
-               platovTicket.setPrice(prices.get(i).toString());
-               Ticket ticket=new Ticket();
-               ticket.setArrivalDate(platovTicket.getArrivalTime());
-               ticket.setDepartureDate(platovTicket.getDepartureTime());
-               ticket.setDepartureAir(airportRepo.findByCode(platovTicket.getDeparture().getId()).getName_air());
-               ticket.setArrivalAir(airportRepo.findByCode(platovTicket.getArrival().getId()).getName_air());
-               ticket.setPrice(platovTicket.getPrice());
-               ticket.setAirline(platovTicket.getAirline().getName());
-               ticket.setLink(links.get(i).toString());
+        try {
+            JsonNode jsonNode = objectMapper.readTree(response);
+            List<Ticket> tickets = new ArrayList<>();
+            List<JsonNode> trips = jsonNode.findValues("trips");
+            // List<JsonNode> segments=jsonNode.findValues("segments");
+            List<JsonNode> prices = jsonNode.findValues("price");
+            List<JsonNode> links = jsonNode.findValues("deep_link");
+            for (int i = 0; i < trips.size(); i++) {
+                PlatovTicket platovTicket = objectMapper.readValue(trips.get(i).findValue("segments").get(0).toString(), PlatovTicket.class);
+                platovTicket.setPrice(prices.get(i).toString());
+                Ticket ticket = new Ticket();
+                ticket.setArrivalDate(platovTicket.getArrivalTime());
+                ticket.setDepartureDate(platovTicket.getDepartureTime());
+                try {
+                    ticket.setDepartureAir(airportRepo.findByCode(platovTicket.getDeparture().getId()).getName());
+
+                } catch (NullPointerException e) {
+                    ticket.setArrivalAir(airportRepo.findByCode(r.getFrom()).getName());
+
+                }
+                try {
+                    ticket.setArrivalAir(airportRepo.findByCode(platovTicket.getArrival().getId()).getName());
+                } catch (NullPointerException e) {
+                    ticket.setArrivalAir(airportRepo.findByCode(r.getTo()).getName());
+
+                }
+                ticket.setPrice(platovTicket.getPrice());
+                ticket.setAirline(platovTicket.getAirline().getName());
+                ticket.setLink(links.get(i).toString());
                 tickets.add(ticket);
             }
             return tickets;
         } catch (JsonProcessingException e) {
-            log.error("error when parsing response",e);
+            log.error("error when parsing response", e);
         }
         log.error(response);
         return null;

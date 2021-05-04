@@ -1,0 +1,108 @@
+<div class="container">
+  <app-logout></app-logout>
+  <div class="row">
+
+    <div class="col-12  d-flex justify-content-center">
+      <form>
+
+        <label>Выберете год</label>
+        <select [(ngModel)]="year"  name="year">
+          <option value=2021>2021</option>
+          <option value=2022>2022</option>
+          <option value=2023>2023</option>
+          <option value=2024>2024</option>
+          <option value=2025>2025</option>
+        </select>
+        <label>Выберете месяц</label>
+        <select [(ngModel)]="month" name="month" >
+          <option value=1>Январь</option>
+          <option value=2>Февраль</option>
+          <option value=3>Март</option>
+          <option value=4>Апрель</option>
+          <option value=5>Май</option>
+          <option value=6>Июнь</option>
+          <option value=7>Июль</option>
+          <option value=8>Август</option>
+          <option value=9>Сентябрь</option>
+          <option value=10>Октябрь</option>
+          <option value=11>Ноябрь</option>
+          <option value=12>Декабрь</option>
+        </select>
+        <label>Выберете станцию</label>
+
+        <select  name="year"  [(ngModel)]="stationObj.id">
+          <option  *ngFor="let st of stations;" value='{{st.id}}'>{{st.stationName}}</option>
+        </select>
+
+        <button class="badge-primary btn" (click)="findReport(year,month,stationObj.id)">Загрузить</button>
+      </form>
+      <p style="text-align: center">{{message}}</p>
+    </div>
+    <div class="col-12">
+      <form>
+        <h5 class="text-center">Обследованная площадь</h5>
+        <div >
+          <label>В поле</label>
+          <input type="number" min="0" [(ngModel)]="report.area_pole" name="area_pole" [disabled]="!isButtonEnable">
+          <label>В населенных пунктах</label>
+          <input type="number" [(ngModel)]="report.area_punkt" name="area_punkt" [disabled]="!isButtonEnable">
+        </div>
+        <h5 class="text-center">Выставлено орудий улова</h5>
+        <div>
+          <label>В поле</label>
+          <input type="number" [(ngModel)]="report.orud_pole"name="orud_pole" [disabled]="!isButtonEnable">
+          <label>В населенных пунктах</label>
+          <input type="number" [(ngModel)]="report.orud_punkt" name="orud_punkt" [disabled]="!isButtonEnable">
+        </div>
+        <h5 class="text-center">Накоплено при сборе исходных клещей</h5>
+        <div>
+          <label>Флаго-часов</label>
+          <input type="number" [(ngModel)]="report.mites_h" name="mites_h" [disabled]="!isButtonEnable">
+          <label>Флаго-км</label>
+          <input type="number" [(ngModel)]="report.mites_km" name="mites_km" [disabled]="!isButtonEnable">
+        </div>
+        <h5 class="text-center">Число добытых объектов (экз.)</h5>
+        <div class="row">
+
+          <div class="col-4 d-flex flex-column">
+            <h6>млекопитающих</h6>
+            <label>грызунов</label>
+            <input type="number" [(ngModel)]="report.mammals_rodents" name="mammals_rodents" [disabled]="!isButtonEnable">
+            <label>насекомо-ядных</label>
+            <input type="number" [(ngModel)]="report.mammals_insectivores" name="mammals_insectivores" [disabled]="!isButtonEnable">
+            <label>хищников</label>
+            <input type="number" [(ngModel)]="report.mammals_predators" name="mammals_predators" [disabled]="!isButtonEnable">
+            <label>прочих</label>
+            <input type="number" [(ngModel)]="report.mammals_others" name="mammals_others" [disabled]="!isButtonEnable">
+
+          </div>
+          <div class="col-4 d-flex flex-column">
+            <h6>кровососущих членистоногих</h6>
+
+            <label>блох</label>
+            <input type="number" [(ngModel)]="report.arthropods_blox" name="arthropods_blox" [disabled]="!isButtonEnable">
+            <label>иксодовых клещей</label>
+            <input type="number" [(ngModel)]="report.arthropods_mites" name="arthropods_mites" [disabled]="!isButtonEnable">
+            <label>комаров</label>
+            <input type="number" [(ngModel)]="report.arthropods_komar" name="arthropods_komar" [disabled]="!isButtonEnable">
+            <label>прочих</label>
+            <input type="number" [(ngModel)]="report.arthropods_other" name="arthropods_other" [disabled]="!isButtonEnable">
+          </div>
+          <div class="col-4 d-flex flex-column">
+            <h6>птиц</h6>
+            <label>птиц</label>
+            <input type="number" [(ngModel)]="report.birds" name="birds" [disabled]="!isButtonEnable"></div>
+          <div>
+            <label>погдок</label>
+            <input type="number" [(ngModel)]="report.pogadki" name="pogadki" [disabled]="!isButtonEnable">
+            <label>проб воды</label>
+            <input type="number" [(ngModel)]="report.water" name="water" [disabled]="!isButtonEnable">
+            <label>прочих</label>
+            <input type="number" [(ngModel)]="report.other" name="other" [disabled]="!isButtonEnable">
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+

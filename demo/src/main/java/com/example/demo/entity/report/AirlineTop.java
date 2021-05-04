@@ -15,7 +15,7 @@ import javax.persistence.*;
                                 @ColumnResult(name="airline" ),
                                 @ColumnResult(name="countOfTicket", type=Integer.class)})})
 @NamedNativeQuery(name = "Airlines",
-        query = "SELECT airline , COUNT(id) as countOfTicket FROM ticket GROUP BY airline",
+        query = "SELECT airline , COUNT(id) as countOfTicket FROM ticketdb GROUP BY airline",
         resultSetMapping = "AirlineResult")
 @Entity
 @JsonIgnoreProperties(ignoreUnknown = true)

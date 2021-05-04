@@ -12,14 +12,16 @@ public class Airport {
     private Long id;
     @Column(unique=true)
     private String code;
-    private String name_air;
+    private String name;
+   // private String name_air;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "city_id")
     private City city;
 
+
     public Airport(String code, String name) {
         this.code=code;
-        this.name_air=name;
+        this.name=name;
     }
     public Airport(){}
 }

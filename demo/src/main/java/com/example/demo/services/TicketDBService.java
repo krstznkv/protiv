@@ -1,24 +1,24 @@
 package com.example.demo.services;
 
-import com.example.demo.entity.Message;
 import com.example.demo.entity.Ticket;
 import com.example.demo.entity.User;
 import com.example.demo.entity.report.AirlineTop;
-import com.example.demo.repo.TicketRepository;
-import com.example.demo.repo.UserRepository;
+import com.example.demo.entity.report.TicketDB;
+import com.example.demo.repo.AirportRepo;
+import com.example.demo.repo.TicketDBRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Service
 public class TicketDBService {
     @Autowired
-    TicketRepository ticketRepository;
+    TicketDBRepo ticketRepository;
+    @Autowired
+    AirportRepo airportRepo;
     @PersistenceContext
     private  EntityManager em;
    
@@ -29,8 +29,12 @@ public class TicketDBService {
         if(list==null) throw new IllegalArgumentException("oh");
         return list;
     }
-    public Ticket save(Ticket ticket){
-        return ticketRepository.save(ticket);
+    public TicketDB save(Ticket ticket, User user){
+        TicketDB ticketDB=new TicketDB(ticket);
+         ticketDB.setDepartureAir(airportRepo.findByName(ticket.getDepartureAir()));
+         ticketDB.setArrivalAir(airportRepo.findByName(ticket.getArrivalAir()));
+         ticketDB.setUser(user);
+        return ticketRepository.save(ticketDB);
     }
 
 }
