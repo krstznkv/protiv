@@ -1,8 +1,9 @@
 <div class="container">
   <app-logout></app-logout>
-  <div class="row">
+  <div class="row mt-4">
 
-      <div class="col-12"><h1 class="text-center">{{station}}</h1></div>
+    <div class="col-12"><h1 class="text-center">{{station}} Противочумная станция</h1></div>
+    <div class="col-12"><h2 class="text-center">Эпизоотологическое обследование в природных и антропоургических очагах других инфекций</h2></div>
     <div class="col-12  d-flex justify-content-center">
       <form>
 
@@ -33,24 +34,26 @@
       </form>
       <p style="text-align: center">{{message}}</p>
         </div>
-        <div class="col-12">
-          <form>
+  </div>
+    <div class="row d-flex justify-content-center"  *ngIf="showForm">
+        <div class="col-10 form_wrapper ">
+          <form class="form_data">
          <h5 class="text-center">Обследованная площадь</h5>
-        <div >
+        <div class="text-center">
         <label>В поле</label>
         <input type="number" min="0" [(ngModel)]="report.area_pole" name="area_pole" [disabled]="!isButtonEnable">
         <label>В населенных пунктах</label>
         <input type="number" [(ngModel)]="report.area_punkt" name="area_punkt" [disabled]="!isButtonEnable">
         </div>
         <h5 class="text-center">Выставлено орудий улова</h5>
-        <div>
+        <div class="text-center">
           <label>В поле</label>
           <input type="number" [(ngModel)]="report.orud_pole"name="orud_pole" [disabled]="!isButtonEnable">
           <label>В населенных пунктах</label>
           <input type="number" [(ngModel)]="report.orud_punkt" name="orud_punkt" [disabled]="!isButtonEnable">
         </div>
         <h5 class="text-center">Накоплено при сборе исходных клещей</h5>
-        <div>
+        <div class="text-center flag_block">
           <label>Флаго-часов</label>
           <input type="number" [(ngModel)]="report.mites_h" name="mites_h" [disabled]="!isButtonEnable">
           <label>Флаго-км</label>
@@ -84,20 +87,22 @@
             <input type="number" [(ngModel)]="report.arthropods_other" name="arthropods_other" [disabled]="!isButtonEnable">
           </div>
           <div class="col-4 d-flex flex-column">
-            <h6>птиц</h6>
+            <h6>Другое</h6>
             <label>птиц</label>
-            <input type="number" [(ngModel)]="report.birds" name="birds" [disabled]="!isButtonEnable"></div>
-          <div>
-          <label>погдок</label>
-          <input type="number" [(ngModel)]="report.pogadki" name="pogadki" [disabled]="!isButtonEnable">
-          <label>проб воды</label>
-          <input type="number" [(ngModel)]="report.water" name="water" [disabled]="!isButtonEnable">
-          <label>прочих</label>
-          <input type="number" [(ngModel)]="report.other" name="other" [disabled]="!isButtonEnable">
-         </div>
+            <input type="number" [(ngModel)]="report.birds" name="birds" [disabled]="!isButtonEnable">
+            <label>погодок</label>
+            <input type="number" [(ngModel)]="report.pogadki" name="pogadki" [disabled]="!isButtonEnable">
+            <label>проб воды</label>
+            <input type="number" [(ngModel)]="report.water" name="water" [disabled]="!isButtonEnable">
+            <label>прочих</label>
+            <input type="number" [(ngModel)]="report.other" name="other" [disabled]="!isButtonEnable">
+          </div>
         </div>
-            <button class="btn btn-info" [disabled]="!isButtonEnable"  (click)="saveReport(report)">Сохранить</button>
-      </form>
-  </div>
+          <div class="text-center mt-2">
+            <button class="btn btn-info " [disabled]="!isButtonEnable"  (click)="saveReport(report)">Сохранить</button>
+          </div>
+          </form>
+       </div>
+    </div>
 </div>
-</div>
+

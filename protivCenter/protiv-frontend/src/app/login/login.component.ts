@@ -10,12 +10,14 @@ import {Router} from '@angular/router';
 export class LoginComponent implements OnInit {
   username: string;
   password: string;
+  role;
   error;
 
   constructor(private service: ApiService, private  router: Router) {
   }
 
   ngOnInit(): void {
+    this.role = sessionStorage.getItem('authenticatedUserRole');
   }
 
   login() {
@@ -25,7 +27,7 @@ export class LoginComponent implements OnInit {
       },
       error => {
         if (error.status === 401) {
-          this.error = 'Wrong login or password';
+          this.error = 'Неверный логин или пароль';
         } else {
           this.error = error.message;
         }

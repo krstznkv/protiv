@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {EpEx} from '../model/ep-ex';
 import {Station} from '../model/station';
 import {ApiService} from '../api.service';
+import { saveAs } from 'file-saver';
 
 @Component({
   selector: 'app-station-report-for-center',
@@ -38,5 +39,9 @@ export class StationReportForCenterComponent implements OnInit {
           this.message = 'К сожалению данные за период отсутсвуют'; }
       }
     );
+  }
+
+  downloadFile(year: number, month: number) {
+    this.service.downloadReportForMonth(year, month).subscribe(data => saveAs(data, 'report' + year + '-' + month + '.xlsx'));
   }
 }

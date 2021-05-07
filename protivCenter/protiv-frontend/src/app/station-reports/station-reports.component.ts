@@ -18,12 +18,15 @@ export class StationReportsComponent implements OnInit {
   year = 0;
   isButtonEnable = false;
   message;
+  showForm = false;
   constructor(private service: ApiService) { }
 
   ngOnInit(): void {
     this.role = sessionStorage.getItem('authenticatedUserRole');
     this.station = sessionStorage.getItem('authenticatedUserStation');
     this.stationId =  Number(sessionStorage.getItem('userStationId'));
+    console.log(this.stationId);
+    console.log(sessionStorage.getItem('userStationId'));
   }
   saveReport(report) {
     this.report = report;
@@ -42,10 +45,12 @@ export class StationReportsComponent implements OnInit {
       if (data !== null) {
         this.report = data;
         this.isButtonEnable = false;
+        this.showForm = true;
       }
       else {
         if (this.isRedactor()) {
         this.isButtonEnable = true;
+        this.showForm = true;
       }
       else { this.message = 'К сожалению данные за период отсутсвуют'; }}
       }
