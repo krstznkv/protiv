@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {EpEx} from '../model/ep-ex';
-import {ApiService} from '../api.service';
-import {Station} from '../model/station';
+import {EpEx} from '../../model/ep-ex';
+import {ApiService} from '../../api.service';
+import {Station} from '../../model/station';
 
 @Component({
   selector: 'app-station-reports',
@@ -19,23 +19,27 @@ export class StationReportsComponent implements OnInit {
   isButtonEnable = false;
   message;
   showForm = false;
+  path = 'ExEp';
+  modal: boolean;
   constructor(private service: ApiService) { }
 
   ngOnInit(): void {
     this.role = sessionStorage.getItem('authenticatedUserRole');
     this.station = sessionStorage.getItem('authenticatedUserStation');
     this.stationId =  Number(sessionStorage.getItem('userStationId'));
-    console.log(this.stationId);
-    console.log(sessionStorage.getItem('userStationId'));
   }
   saveReport(report) {
+    this.report.id = null;
     this.report = report;
     this.report.month = this.month;
     this.report.year = this.year;
     this.stationObj.id = this.stationId;
     this.report.station = this.stationObj;
-    this.service.saveReport(this.report).subscribe((data) => console.log(data)
-    , error => console.log('do not save'));
+    this.service.saveReport(this.report, this.path).subscribe((data) => {
+      this.modal = true;
+      this.reset();
+    },
+    error => console.log('do not save'));
   }
 
   findReport(year: number, month: number) {
@@ -49,14 +53,23 @@ export class StationReportsComponent implements OnInit {
       }
       else {
         if (this.isRedactor()) {
-        this.isButtonEnable = true;
-        this.showForm = true;
+          this.report.id = null;
+          this.isButtonEnable = true;
+          this.showForm = true;
       }
-      else { this.message = 'К сожалению данные за период отсутсвуют'; }}
+      else {
+        this.message = 'К сожалению данные за период отсутсвуют'; }}
       }
     );
   }
   isRedactor(){
     return this.role === 'REDACTOR';
+  }
+
+  close() {
+    this.modal = false;
+  }
+  reset(){
+    this.report = {} as EpEx;
   }
 }

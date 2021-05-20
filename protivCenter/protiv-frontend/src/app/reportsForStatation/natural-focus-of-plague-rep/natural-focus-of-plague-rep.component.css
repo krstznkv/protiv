@@ -1,0 +1,29 @@
+label{
+  margin: 10px;
+}
+h5{
+  margin-top: 15px;
+}
+button {
+  margin: 10px;
+}
+h1{
+  font-size: 23px;
+}
+h2{
+  font-size: 20px;
+}
+.form_wrapper{
+  border: solid 2px dodgerblue;
+  width: 100%;
+}
+.flag_block{
+  margin-left: -50px;
+}
+.enter{
+  margin-top: 24px;
+}
+.modal_w{
+  margin-left: auto;
+  margin-right: auto;
+}

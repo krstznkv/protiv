@@ -2,20 +2,14 @@ package com.example.demo.entity.reports;
 
 import com.example.demo.entity.Station;
 import lombok.Data;
+import org.springframework.core.io.Resource;
 
 import javax.persistence.*;
+import java.awt.geom.RectangularShape;
 
 @Data
 @Entity
-public class EpizootologicalExamination {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="station_id")
-    private Station station;
-    private int year;
-    private int month;
+public class EpizootologicalExamination extends ReportBase {
     private float area_pole;
     private float area_punkt;
     private float orud_pole;

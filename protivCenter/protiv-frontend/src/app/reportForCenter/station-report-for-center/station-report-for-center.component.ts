@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {EpEx} from '../model/ep-ex';
-import {Station} from '../model/station';
-import {ApiService} from '../api.service';
+import {EpEx} from '../../model/ep-ex';
+import {Station} from '../../model/station';
+import {ApiService} from '../../api.service';
 import { saveAs } from 'file-saver';
 
 @Component({
@@ -10,7 +10,6 @@ import { saveAs } from 'file-saver';
   styleUrls: ['./station-report-for-center.component.css']
 })
 export class StationReportForCenterComponent implements OnInit {
-  role = sessionStorage.getItem('authenticatedUserRole');
   report = {} as EpEx;
   stationObj = {} as Station;
   month = 0;
@@ -19,7 +18,7 @@ export class StationReportForCenterComponent implements OnInit {
   message;
   stations: Station[];
   constructor(private service: ApiService) { }
-
+  path = 'ExEp';
   ngOnInit(): void {
     this.findAllStation();
   }
@@ -42,6 +41,6 @@ export class StationReportForCenterComponent implements OnInit {
   }
 
   downloadFile(year: number, month: number) {
-    this.service.downloadReportForMonth(year, month).subscribe(data => saveAs(data, 'report' + year + '-' + month + '.xlsx'));
+    this.service.downloadReportForMonth(year, month, this.path).subscribe(data => saveAs(data, 'report' + year + '-' + month + '.xlsx'));
   }
 }

@@ -1,0 +1,16 @@
+label{
+  margin: 10px;
+}
+h5{
+  margin-top: 15px;
+}
+button {
+  margin: 10px;
+}
+select {
+  min-width:200px;
+}
+.form_options{
+  border: solid 2px cornflowerblue;
+  max-height: 320px;
+}

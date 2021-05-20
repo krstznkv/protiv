@@ -1,0 +1,19 @@
+.header-panel{
+  padding-top:10px;
+  background-color: #4169E1;
+  width: 100%;
+}
+img{
+  max-height: 80px;
+  max-width: 40px;
+}
+.header-panel ul li a{
+  color:white;
+}
+.container{
+  background-color: #dce1e6;
+}
+a.active{
+  color: #0000FF !important;
+}
+

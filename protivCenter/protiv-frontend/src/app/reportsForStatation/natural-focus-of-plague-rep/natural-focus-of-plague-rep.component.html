@@ -1,0 +1,92 @@
+<app-header-panel></app-header-panel>
+<div class="container">
+  <div class="row mt-4">
+    <div class="col-12"><h1 class="text-center">{{station.stationName}} Противочумная станция</h1></div>
+    <div class="col-12">
+      <h2 class="text-center">Эпизоотологическое обследование природных очагов чумы
+      </h2>
+    </div>
+    <div class="col-12  d-flex justify-content-center">
+      <form>
+
+        <label>Выберете год</label>
+        <select [(ngModel)]="year"  name="year">
+          <option value=2021>2021</option>
+          <option value=2022>2022</option>
+          <option value=2023>2023</option>
+          <option value=2024>2024</option>
+          <option value=2025>2025</option>
+        </select>
+        <label>Выберете полугодие</label>
+        <select [(ngModel)]="month" name="month" >
+          <option value=1>Первое</option>
+          <option value=2>Второе</option>
+        </select>
+        <button class="badge-primary btn" (click)="findReport(year,month)">Загрузить</button>
+      </form>
+
+    </div>
+    <div class="col-12"><p style="text-align: center">{{message}}</p></div>
+  </div>
+
+  <div class="row d-flex justify-content-center"  *ngIf="showForm">
+    <div class="col-10 form_wrapper ">
+      <form class="form_data">
+        <h5 class="text-center">Обследованная площадь очагов чумы</h5>
+        <div class="text-center">
+          <label>Физическая</label>
+          <input type="number" min="0" [(ngModel)]="report.area_fiz" name="area_pole" [disabled]="!isButtonEnable">
+          <label>Оперативная</label>
+          <input type="number" [(ngModel)]="report.area_oper" name="area_punkt" [disabled]="!isButtonEnable">
+        </div>
+        <h5 class="text-center">Обследованная площадь городских и сельских населенных пунктов на наличие </h5>
+        <div class="text-center">
+          <label>Носителей</label>
+          <input type="number" min="0" [(ngModel)]="report.nocit" name="nocit" [disabled]="!isButtonEnable">
+          <label>Блох</label>
+          <input type="number" [(ngModel)]="report.blox" name="blox" [disabled]="!isButtonEnable">
+        </div>
+        <h5 class="text-center">Выставлено орудий улова</h5>
+        <div class="text-center">
+          <label>В поле</label>
+          <input type="number" [(ngModel)]="report.orud_pole"name="orud_pole" [disabled]="!isButtonEnable">
+          <label>В населенных пунктах</label>
+          <input type="number" [(ngModel)]="report.orud_punkt" name="orud_punkt" [disabled]="!isButtonEnable">
+        </div>
+        <h5 class="text-center">Исследовано бактериологическим (биологическим) методом (экз.)</h5>
+        <div class="row">
+        <div class="col-4 d-flex flex-column">
+          <h6>носителей</h6>
+          <label style="color: white">носителей</label>
+          <input type="number" [(ngModel)]="report.bac_nosit" name="mammals_rodents" [disabled]="!isButtonEnable">
+        </div>
+        <div class="col-4 d-flex flex-column">
+          <h6>кровососущих членистоногих</h6>
+          <label>всего</label>
+          <input type="number" [(ngModel)]="report.krov_all" name="krov_all" [disabled]="!isButtonEnable">
+          <label>в том числе блох</label>
+          <input type="number" [(ngModel)]="report.krov_blox" name="krov_blox" [disabled]="!isButtonEnable">
+        </div>
+
+        <div class="col-4 d-flex flex-column">
+          <h6>Осмотрено входов нор носителей на наличие экто-паразитов</h6>
+          <input class="enter" type="number" [(ngModel)]="report.enter" name="enter" [disabled]="!isButtonEnable">
+        </div>
+        </div>
+        <div class="text-center mt-2">
+          <button class="btn btn-info " [disabled]="!isButtonEnable"  (click)="saveReport(report)">Сохранить</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="modal_w" [hidden]="!modal">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content mt-2">
+          <p class="text-center ">Успешно сохранено!</p>
+        <a class="btn btn-info" (click)="close()">OK</a>
+      </div><!-- /.модальное окно-Содержание -->
+    </div><!-- /.модальное окно-диалог -->
+  </div><!-- /.модальное окно -->
+</div>
+
+

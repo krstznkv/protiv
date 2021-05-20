@@ -1,7 +1,6 @@
+<app-header-panel></app-header-panel>
 <div class="container">
-  <app-logout></app-logout>
-  <div class="row mt-4">
-
+  <div class="row pt-4">
     <div class="col-12"><h1 class="text-center">{{station}} Противочумная станция</h1></div>
     <div class="col-12"><h2 class="text-center">Эпизоотологическое обследование в природных и антропоургических очагах других инфекций</h2></div>
     <div class="col-12  d-flex justify-content-center">
@@ -104,5 +103,13 @@
           </form>
        </div>
     </div>
+  <div class="modal_w" [hidden]="!modal">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content mt-2">
+        <p class="text-center ">Успешно сохранено!</p>
+        <a class="btn btn-info" (click)="close()">OK</a>
+      </div><!-- /.модальное окно-Содержание -->
+    </div><!-- /.модальное окно-диалог -->
+  </div><!-- /.модальное окно -->
 </div>
 

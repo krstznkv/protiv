@@ -4,17 +4,13 @@ import com.example.demo.entity.Message;
 import com.example.demo.entity.Role;
 import com.example.demo.entity.Station;
 import com.example.demo.entity.User;
-import com.example.demo.entity.reports.EpizootologicalExamination;
-import com.example.demo.repo.ReportRepository;
 import com.example.demo.repo.StationRepo;
-import com.example.demo.services.ReportService;
 import com.example.demo.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
 import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:4200")

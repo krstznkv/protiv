@@ -16,10 +16,17 @@ h2{
 .form_wrapper{
   border: solid 2px dodgerblue;
   width: 100%;
+  background-color: white;
 }
 .flag_block{
   margin-left: -50px;
 }
-.form_data{
-
+.modal_w{
+  position: fixed;
+  left: 50%;
+  margin-left: -150px;
+  margin-top: -50px;
+  top: 50%;
+  width: 300px;
+  padding: 15px;
 }

@@ -1,8 +1,8 @@
-import {Station} from '../../model/station';
+import {Station} from './station';
 
 export interface User {
-  station: Station;
   username: string;
   password: string;
   roles: string[];
+  station: Station;
 }
