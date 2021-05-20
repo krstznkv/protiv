@@ -16,6 +16,11 @@ export class HomeComponent implements OnInit {
     this.username = sessionStorage.getItem('authenticatedUser');
     this.service.findUser(this.username).subscribe((data) => {
       this.role = data.message;
+      sessionStorage.setItem('authenticatedUserRole', data.message);
+      this.service.findUserByUsername(this.username).subscribe((data1) => {
+        sessionStorage.setItem('authenticatedUserStation', data1.station.stationName);
+        sessionStorage.setItem('userStationId', String(data1.station.id));
+      });
       if (this.role === 'ADMIN'){
         this.router.navigate(['/station-report-for-center']);
       } else {

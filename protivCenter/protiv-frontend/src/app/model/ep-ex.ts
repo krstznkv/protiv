@@ -1,6 +1,7 @@
 import {Station} from './station';
+import {Report} from './report';
 
-export interface EpEx {
+export interface EpEx extends Report{
   id: number;
   station: Station;
   year: number;

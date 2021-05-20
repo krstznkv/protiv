@@ -1,14 +1,13 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {User} from './registration/model/user';
+import {User} from './model/user';
 import {map} from 'rxjs/operators';
-import {RequestT} from './model/requestT';
-import {Ticket} from './model/ticket';
-import {AirlineTop} from './model/airline-top';
 import {Message} from './model/message';
 import {EpEx} from './model/ep-ex';
 import {Station} from './model/station';
 import {Observable} from 'rxjs';
+import {NaturalFocusOfPlague} from './model/natural-focus-of-plague';
+import {Report} from './model/report';
 
 @Injectable({
   providedIn: 'root'
@@ -40,7 +39,7 @@ export class ApiService {
 
         console.log(error);
       });
-      this.findUserByUsername().subscribe((data) => {
+      this.findUserByUsername(this.username).subscribe((data) => {
         console.log(data.station);
         sessionStorage.setItem(this.USER_STATION_ATTRIBUTE_STATION, data.station.stationName);
         sessionStorage.setItem(this.USER_STATION_ID, String(data.station.id));
@@ -54,15 +53,11 @@ export class ApiService {
   findUser(username){
     return this.client.post<Message>('http://localhost:8080/findUser', username);
   }
-  findUserByUsername(){
-    return this.client.post<User>('http://localhost:8080/findUserByUsername', this.username);
+  findUserByUsername(username){
+    return this.client.post<User>('http://localhost:8080/findUserByUsername', username);
   }
   createBasicAuthToken(username: string, password: string) {
     return 'Basic ' + window.btoa(username + ':' + password);
-  }
-
-  registration(user: User) {
-    return this.client.post<User>('http://localhost:8080/registration', user);
   }
 
   isUserLoggedIn() {
@@ -79,17 +74,20 @@ export class ApiService {
     this.username = null;
     this.password = null;
   }
-  saveReport(report: EpEx){
-    return this.client.post<EpEx>('http://localhost:8080/saveReport', report);
+  saveReport(report: Report, path: string){
+    return this.client.post<Report>('http://localhost:8080/' + path + '/saveReport', report);
   }
   findReport(id: number, year: number, month: number){
-    return this.client.get<EpEx>('http://localhost:8080/findReport/' + id + '/' + year + '/' + month );
+    return this.client.get<EpEx>('http://localhost:8080/ExEp/findReport/' + id + '/' + year + '/' + month );
   }
   findAllStations(){
     return this.client.get<Station[]>('http://localhost:8080/findAllStations/');
   }
-  downloadReportForMonth(year: number, month: number): Observable<Blob> {
-    return this.client.get('http://localhost:8080/findAllReport/' + year + '/' + month,
+  downloadReportForMonth(year: number, month: number, path: string): Observable<Blob> {
+    return this.client.get('http://localhost:8080/' + path + '/findAllReport/' + year + '/' + month,
     {responseType: 'blob'});
+  }
+  findReportN(id: number, year: number, month: number){
+    return this.client.get<NaturalFocusOfPlague>('http://localhost:8080/naturalFocus/findReport/' + id + '/' + year + '/' + month );
   }
 }

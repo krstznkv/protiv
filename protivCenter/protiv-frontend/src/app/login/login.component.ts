@@ -22,8 +22,10 @@ export class LoginComponent implements OnInit {
 
   login() {
     this.service.login(this.username, this.password).subscribe(data => {
-        console.log(data);
-        this.router.navigate(['/home']);
+      this.service.findUser(this.username).subscribe((data1) => {
+          this.role = data1.message;
+          sessionStorage.setItem('authenticatedUserRole', data1.message); });
+      this.router.navigate(['/home']);
       },
       error => {
         if (error.status === 401) {
