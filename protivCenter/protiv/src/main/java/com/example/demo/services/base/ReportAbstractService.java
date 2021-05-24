@@ -1,7 +1,7 @@
 package com.example.demo.services.base;
 
 import com.example.demo.entity.Station;
-import com.example.demo.entity.reports.ReportBase;
+import com.example.demo.entity.ReportBase;
 import com.example.demo.repo.base.ReportCommonRepo;
 import com.example.demo.repo.StationRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,12 +26,11 @@ public abstract class ReportAbstractService<E extends ReportBase, R extends Repo
     }
     @Override
     public List<E> findAllReports(int year, int month)  {
-        List<E> list= reportRepository.findAllByYearAndMonth(year, month);
+        List<E> list= reportRepository.findAllByYearAndMonthAndApproveByDirector(year, month,true);
         Collections.sort(list, Comparator.comparing(o -> o.getStation().getStationName()));
 
         return list;
     }
-
     @Override
     public E saveReport(E report){
         return reportRepository.save(report);
@@ -42,5 +41,15 @@ public abstract class ReportAbstractService<E extends ReportBase, R extends Repo
         Collections.sort(list, Comparator.comparing(o -> o.getStation().getStationName()));
 
         return list;
+    }
+    @Override
+    public List<Station> stationsWithoutReport(int year,int month) {
+        List<Station> allStations = stationRepo.findAll();
+        List<E> reports=reportRepository.findAllByYearAndMonthAndApproveByDirector(year, month, true);
+        for (E report:reports
+             ) {
+            allStations.remove(report.getStation());
+        }
+        return allStations;
     }
 }

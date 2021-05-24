@@ -20,41 +20,25 @@ export class ApiService {
   USER_ROLE_SESSION_ATTRIBUTE_ROLE = 'authenticatedUserRole';
   USER_STATION_ATTRIBUTE_STATION = 'authenticatedUserStation';
   USER_STATION_ID = 'userStationId';
-
+  URL = 'http://localhost:8080/';
 
   constructor(private client: HttpClient) {
   }
 
   login(username: string, password: string) {
-    return this.client.get('http://localhost:8080/login',
+    return this.client.get(this.URL + 'login',
       {headers: {authorization: this.createBasicAuthToken(username, password)}}).pipe(map(() => {
       this.username = username;
       this.password = password;
       sessionStorage.setItem(this.USER_NAME_SESSION_ATTRIBUTE_NAME, username);
       sessionStorage.setItem(this.USER_PASSWORD_SESSION_ATTRIBUTE_PASSWORD, password);
-      this.findUser(this.username).subscribe((data) => {
-        console.log(data);
-        sessionStorage.setItem(this.USER_ROLE_SESSION_ATTRIBUTE_ROLE, data.message);
-       }, error => {
-
-        console.log(error);
-      });
-      this.findUserByUsername(this.username).subscribe((data) => {
-        console.log(data.station);
-        sessionStorage.setItem(this.USER_STATION_ATTRIBUTE_STATION, data.station.stationName);
-        sessionStorage.setItem(this.USER_STATION_ID, String(data.station.id));
-        console.log(sessionStorage.getItem('userStationId'));
-      }, error => {
-
-        console.log(error);
-      });
     }));
   }
   findUser(username){
-    return this.client.post<Message>('http://localhost:8080/findUser', username);
+    return this.client.post<Message>(this.URL + 'findUser', username);
   }
   findUserByUsername(username){
-    return this.client.post<User>('http://localhost:8080/findUserByUsername', username);
+    return this.client.post<User>(this.URL + 'findUserByUsername', username);
   }
   createBasicAuthToken(username: string, password: string) {
     return 'Basic ' + window.btoa(username + ':' + password);
@@ -75,19 +59,22 @@ export class ApiService {
     this.password = null;
   }
   saveReport(report: Report, path: string){
-    return this.client.post<Report>('http://localhost:8080/' + path + '/saveReport', report);
+    return this.client.post<Report>(this.URL  + path + '/saveReport', report);
   }
   findReport(id: number, year: number, month: number){
-    return this.client.get<EpEx>('http://localhost:8080/ExEp/findReport/' + id + '/' + year + '/' + month );
+    return this.client.get<EpEx>(this.URL + 'ExEp/findReport/' + id + '/' + year + '/' + month );
   }
   findAllStations(){
-    return this.client.get<Station[]>('http://localhost:8080/findAllStations/');
+    return this.client.get<Station[]>(this.URL + 'findAllStations/');
   }
   downloadReportForMonth(year: number, month: number, path: string): Observable<Blob> {
-    return this.client.get('http://localhost:8080/' + path + '/findAllReport/' + year + '/' + month,
+    return this.client.get(this.URL + path + '/findAllReport/' + year + '/' + month,
     {responseType: 'blob'});
   }
   findReportN(id: number, year: number, month: number){
-    return this.client.get<NaturalFocusOfPlague>('http://localhost:8080/naturalFocus/findReport/' + id + '/' + year + '/' + month );
+    return this.client.get<NaturalFocusOfPlague>(this.URL + 'naturalFocus/findReport/' + id + '/' + year + '/' + month );
+  }
+  findStationWithoutReport(year: number, month: number, path: string){
+    return this.client.get<Station[]>(this.URL + path + '/findStationWithoutReport/' + year + '/' + month);
   }
 }

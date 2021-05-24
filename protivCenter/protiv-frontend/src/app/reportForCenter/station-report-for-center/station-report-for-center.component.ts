@@ -16,7 +16,9 @@ export class StationReportForCenterComponent implements OnInit {
   year = 0;
   isButtonEnable = false;
   message;
+  showForm;
   stations: Station[];
+  stNone = {} as  Station[];
   constructor(private service: ApiService) { }
   path = 'ExEp';
   ngOnInit(): void {
@@ -27,20 +29,35 @@ export class StationReportForCenterComponent implements OnInit {
   }
 
   findReport(year: number, month: number, id: number) {
+    this.stNone = null;
     this.year = year;
     this.month = month;
     this.stationObj.id = id;
     this.service.findReport(this.stationObj.id, this.year, this.month).subscribe((data) => {
-        if (data !== null) {
+        if (data !== null && data.approveByDirector) {
           this.report = data;
+          this.showForm = true;
+          this.message = null;
         }
         else {
+          this.showForm = false;
           this.message = 'К сожалению данные за период отсутсвуют'; }
       }
     );
   }
-
+    findStationWithoutReport(year: number, month: number){
+    this.service.findStationWithoutReport(year, month, this.path).subscribe((data) =>
+    {
+        this.stNone = data;
+    });
+  }
   downloadFile(year: number, month: number) {
-    this.service.downloadReportForMonth(year, month, this.path).subscribe(data => saveAs(data, 'report' + year + '-' + month + '.xlsx'));
+    this.stNone = null;
+    this.service.downloadReportForMonth(year, month, this.path).subscribe((data) => saveAs(data, 'report' + year + '-' + month + '.xlsx'),
+      (error) =>
+      {this.message = 'Невозможно сформировать отчет. Отсутствуют данные по следующим станциям:';
+       this.findStationWithoutReport(year, month);
+      }
+    );
   }
 }

@@ -18,10 +18,8 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
     @Column(nullable = false, unique = true)
     private String username;
-
     private String password;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="station_id")
@@ -30,10 +28,6 @@ public class User implements UserDetails {
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
     private Set<Role> roles = new HashSet<>();
-
-    public void addAdmin(){
-        roles.add(Role.ROLE_ADMIN);
-    }
     public void setRole(Role role){
         roles.add(role);
     }

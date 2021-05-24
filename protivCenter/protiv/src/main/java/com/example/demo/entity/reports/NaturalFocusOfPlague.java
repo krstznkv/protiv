@@ -1,5 +1,6 @@
 package com.example.demo.entity.reports;
 
+import com.example.demo.entity.ReportBase;
 import lombok.Data;
 import javax.persistence.Entity;
 

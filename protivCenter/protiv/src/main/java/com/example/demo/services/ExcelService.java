@@ -2,13 +2,9 @@ package com.example.demo.services;
 
 import com.example.demo.entity.reports.EpizootologicalExamination;
 import com.example.demo.entity.reports.NaturalFocusOfPlague;
-import com.example.demo.entity.reports.ReportBase;
-import com.example.demo.repo.EpExRepo;
-import com.example.demo.repo.NaturalFocusOfPlagueRepo;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFFormulaEvaluator;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileUrlResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
@@ -21,7 +17,7 @@ import java.util.List;
 public class ExcelService {
 
     public Resource getEpExReport(List<EpizootologicalExamination> list) throws IOException {
-        Workbook ExcelBook = new XSSFWorkbook(new FileInputStream("D://avia/protivCenter/protiv/2.5.xlsx"));
+        Workbook ExcelBook = new XSSFWorkbook(new FileInputStream("D://avia/protivCenter/protiv/2.5.1.xlsx"));
         Sheet sheet = ExcelBook.getSheet("2.5");
         CellStyle style5 = ExcelBook.createCellStyle();
         style5.setBorderBottom((short) 1);

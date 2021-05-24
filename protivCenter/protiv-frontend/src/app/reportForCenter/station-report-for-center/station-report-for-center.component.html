@@ -2,7 +2,7 @@
 <div class="container">
 <div class="row mt-4"><div class="col-12"><h2 class="text-center">Эпизоотологическое обследование в природных и антропоургических очагах других инфекций</h2></div></div>
   <div class="row mt-2">
-    <div class="col-3 mt-2 d-flex justify-content-center form_options">
+    <div class="col-3 mt-2 d-flex justify-content-center form_options" >
       <form>
         <div class="text-center">
         <label>Выберете год</label><br>
@@ -40,9 +40,10 @@
       </div>
       </form>
     </div>
-    <div class="col-9">
+    <div class="col-9" >
       <p style="text-align: center">{{message}}</p>
-      <form class="form_data">
+      <p *ngFor="let sta of stNone;">{{sta.stationName}}</p>
+      <form class="form_data" [hidden]="!showForm">
         <h5 class="text-center">Обследованная площадь</h5>
         <div class="">
           <label>В поле</label>

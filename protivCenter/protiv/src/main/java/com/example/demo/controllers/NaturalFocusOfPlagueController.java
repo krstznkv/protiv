@@ -1,6 +1,7 @@
 package com.example.demo.controllers;
 
 import com.example.demo.controllers.base.ReportAbstractController;
+import com.example.demo.entity.Station;
 import com.example.demo.entity.reports.NaturalFocusOfPlague;
 import com.example.demo.services.ExcelService;
 import com.example.demo.services.NaturalFocusOfPlagueService;
@@ -27,6 +28,9 @@ public class NaturalFocusOfPlagueController extends ReportAbstractController<Nat
 
     @Override
     public ResponseEntity<Resource> findAllReport(int year, int month) throws IOException {
+        List<Station> stNone=reportService.stationsWithoutReport(year, month);
+        if(stNone!=null&&stNone.size()!=0)
+            throw new IllegalArgumentException("Отсутсвуют данные по станциям");
        Resource file=excelService.getNatReport(reportService.findAllReports(year,1),reportService.findAllReports(year,2));
         return ResponseEntity
                 .ok()
@@ -35,7 +39,7 @@ public class NaturalFocusOfPlagueController extends ReportAbstractController<Nat
                 .body(file);
     }
     @GetMapping("/all")
-    public List<NaturalFocusOfPlague> fAll(int year){
-        return reportService.findAllReportsByYear( year);
+    public List<NaturalFocusOfPlague> fAll(int year, int month){
+        return reportService.findAllReports(year,month);
     }
 }

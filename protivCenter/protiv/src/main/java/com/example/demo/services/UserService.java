@@ -27,12 +27,14 @@ public class UserService implements UserDetailsService {
 
         if (userFromDB != null) {
             throw new IllegalArgumentException("User exist");
-
         }
-
         user.setRole(Role.ROLE_USER);
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-
         return userRepo.save(user) ;
+    }
+    public User resetPassword(User user){
+        User userFromDB = userRepo.findByUsername(user.getUsername());
+        userFromDB.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        return userRepo.save(user);
     }
 }

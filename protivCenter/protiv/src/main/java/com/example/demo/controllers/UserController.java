@@ -37,6 +37,11 @@ public class UserController {
         user.setRole(Role.ROLE_REDACTOR);
         return ResponseEntity.ok(userService.save(user));
     }
+    @PostMapping("registrationDirector")
+    public ResponseEntity<User> registrationD(@RequestBody User user) {
+        user.setRole(Role.ROLE_DIRECTOR);
+        return ResponseEntity.ok(userService.save(user));
+    }
 
     @PostMapping("/findUser")
     public ResponseEntity<Message> findUser(@RequestBody String username) {
@@ -46,6 +51,8 @@ public class UserController {
             return ResponseEntity.ok(new Message("ADMIN"));
         else if (u.getRoles().contains(Role.ROLE_REDACTOR))
             return ResponseEntity.ok(new Message("REDACTOR"));
+            else if (u.getRoles().contains(Role.ROLE_DIRECTOR))
+                return ResponseEntity.ok(new Message("DIRECTOR"));
         else return ResponseEntity.ok(new Message("USER"));
     }
     @PostMapping("/findUserByUsername")

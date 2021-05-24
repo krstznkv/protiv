@@ -21,6 +21,7 @@ export class StationReportsComponent implements OnInit {
   showForm = false;
   path = 'ExEp';
   modal: boolean;
+  canUpdate: boolean;
   constructor(private service: ApiService) { }
 
   ngOnInit(): void {
@@ -29,7 +30,6 @@ export class StationReportsComponent implements OnInit {
     this.stationId =  Number(sessionStorage.getItem('userStationId'));
   }
   saveReport(report) {
-    this.report.id = null;
     this.report = report;
     this.report.month = this.month;
     this.report.year = this.year;
@@ -50,10 +50,14 @@ export class StationReportsComponent implements OnInit {
         this.report = data;
         this.isButtonEnable = false;
         this.showForm = true;
+        if (!this.report.approveByDirector){
+          this.canUpdate = true;
+        }
       }
       else {
         if (this.isRedactor()) {
           this.report.id = null;
+          this.reset();
           this.isButtonEnable = true;
           this.showForm = true;
       }
@@ -65,11 +69,23 @@ export class StationReportsComponent implements OnInit {
   isRedactor(){
     return this.role === 'REDACTOR';
   }
+  isDirector(){
+    return this.role === 'DIRECTOR';
+  }
 
   close() {
     this.modal = false;
   }
   reset(){
     this.report = {} as EpEx;
+  }
+
+  approve(report: EpEx) {
+    report.approveByDirector = true;
+    this.saveReport(report);
+  }
+
+  update() {
+    this.isButtonEnable = true;
   }
 }

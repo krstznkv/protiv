@@ -1,11 +1,9 @@
 package com.example.demo.entity.reports;
 
-import com.example.demo.entity.Station;
+import com.example.demo.entity.ReportBase;
 import lombok.Data;
-import org.springframework.core.io.Resource;
 
 import javax.persistence.*;
-import java.awt.geom.RectangularShape;
 
 @Data
 @Entity
